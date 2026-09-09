@@ -3,7 +3,8 @@ import {createRoot} from "react-dom/client";
 import {
   Activity, Brain, CircleCheck, CircleAlert, Footprints, Gauge, HeartPulse,
   Play, Pause, RotateCcw, ShieldCheck, Video, UserRound, TrendingDown,
-  TrendingUp, Info, FileText, Printer, Copy, Check, X, Stethoscope, Sparkles
+  TrendingUp, Info, FileText, Printer, Copy, Check, X, Stethoscope, Sparkles,
+  Clock, ChevronRight, ArrowRight
 } from "lucide-react";
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend} from "recharts";
 import "./styles.css";
@@ -12,6 +13,18 @@ const profiles = [
  {
    id:"A", name:"Demo Patient A", label:"Healthy / Low-risk pattern", risk:"LOW", color:"green",
    clinicalFocus: "Preventive conditioning & baseline maintenance",
+   urgency: "ROUTINE SURVEILLANCE",
+   urgencyTone: "green",
+   timeline: "12 Months (Annual Surveillance)",
+   pathway: "Preventive Joint Health & Active Maintenance",
+   trendBadge: { label: "STABLE BASELINE", tone: "green" },
+   trendSummary: "Consistently optimal knee range of motion (123°–126°) and zero reported pain across 4 consecutive longitudinal visits.",
+   history: [
+     { session: "S1 (12m ago)", rom: 124, pain: 0 },
+     { session: "S2 (8m ago)", rom: 126, pain: 0 },
+     { session: "S3 (4m ago)", rom: 123, pain: 0 },
+     { session: "S4 (Current)", rom: 125, pain: 0 }
+   ],
    wearable:{rom:125,flexion:62,velocity:190,variability:3,asymmetry:3,smooth:"High",flexSensor:120,imuAgreement:"Good"},
    q:{pain:0,stiffness:"None",stairs:"None",standing:"None",swelling:"No"},
    video:{knee:"Normal",gait:"Good",trunk:"Not detected",hesitation:"Not detected"},
@@ -24,11 +37,28 @@ const profiles = [
     ["Sensor Reliability","Good","Low","IMU and flex-sensor estimates are reasonably consistent."]
    ],
    recommendation:"Continue routine monitoring; no escalation is indicated by this simulated profile.",
-   briefAdvice:"Maintain current joint health. Continue regular low-impact aerobic exercise (walking, swimming, cycling) and core/quadriceps strengthening. Keep well hydrated, wear shock-absorbing footwear, and repeat screening annually as part of wellness monitoring."
+   briefAdvice:"Maintain current joint health. Continue regular low-impact aerobic exercise (walking, swimming, cycling) and core/quadriceps strengthening. Keep well hydrated, wear shock-absorbing footwear, and repeat screening annually as part of wellness monitoring.",
+   actionSteps:[
+     { title: "Active Aerobic Conditioning", desc: "Maintain low-impact exercises (walking, cycling, swimming) to stimulate synovial fluid circulation." },
+     { title: "Annual Surveillance Protocol", desc: "Schedule digital screening re-check in 12 months, or sooner if unexpected swelling occurs." },
+     { title: "Kinematic Alignment Maintenance", desc: "Retain symmetric bilateral foot loading and full 125° knee flexion with regular stretching." }
+   ]
  },
  {
    id:"B", name:"Demo Patient B", label:"Mild mobility limitation", risk:"LOW–MODERATE", color:"yellow",
    clinicalFocus: "Early load management & active mobility restoration",
+   urgency: "EARLY CONSERVATIVE CARE",
+   urgencyTone: "yellow",
+   timeline: "4–6 Weeks",
+   pathway: "Primary Care Load Management & Motion Optimization",
+   trendBadge: { label: "MILD MOBILITY LOSS", tone: "yellow" },
+   trendSummary: "Gradual 10° reduction in flexion and emergence of mild stair discomfort (VAS 1 → 3) over the past 8 months.",
+   history: [
+     { session: "S1 (12m ago)", rom: 122, pain: 1 },
+     { session: "S2 (8m ago)", rom: 119, pain: 1 },
+     { session: "S3 (4m ago)", rom: 115, pain: 2 },
+     { session: "S4 (Current)", rom: 112, pain: 3 }
+   ],
    wearable:{rom:112,flexion:55,velocity:155,variability:7,asymmetry:9,smooth:"Moderate",flexSensor:108,imuAgreement:"Good"},
    q:{pain:3,stiffness:"<15 min",stairs:"Mild",standing:"None",swelling:"No"},
    video:{knee:"Slightly reduced",gait:"Mild asymmetry",trunk:"Not detected",hesitation:"Mild"},
@@ -41,11 +71,28 @@ const profiles = [
     ["Sensor Reliability","Good","Low","Sensor agreement is acceptable for this simulated session."]
    ],
    recommendation:"Monitor the pattern and consider repeat screening if symptoms persist or increase.",
-   briefAdvice:"Adopt early conservative management. Integrate gentle knee range-of-motion stretches and quad/hamstring strengthening exercises 3-4 times weekly. Avoid prolonged standing or sudden high-impact joint loading. Re-screen in 4–6 weeks to track if mobility stabilizes."
+   briefAdvice:"Adopt early conservative management. Integrate gentle knee range-of-motion stretches and quad/hamstring strengthening exercises 3-4 times weekly. Avoid prolonged standing or sudden high-impact joint loading. Re-screen in 4–6 weeks to track if mobility stabilizes.",
+   actionSteps:[
+     { title: "Targeted Quadriceps Strengthening", desc: "Perform non-impact closed-kinetic chain exercises (straight-leg raises, wall sits) 3x weekly." },
+     { title: "Short-Term Digital Re-Screening", desc: "Repeat wearable kinematics check in 4–6 weeks to confirm whether ROM loss has halted." },
+     { title: "Activity & Impact Modification", desc: "Pace stair descent, avoid prolonged unassisted standing, and apply warm compresses for morning stiffness." }
+   ]
  },
  {
    id:"C", name:"Demo Patient C", label:"Moderate-risk pattern", risk:"MODERATE", color:"orange",
    clinicalFocus: "Targeted physical therapy & biomechanical alignment",
+   urgency: "ACTIVE INTERVENTION",
+   urgencyTone: "orange",
+   timeline: "2–3 Weeks",
+   pathway: "Supervised Physical Therapy & Kinetic Offloading",
+   trendBadge: { label: "MODERATE PROGRESSION", tone: "orange" },
+   trendSummary: "Progressive loss of knee range of motion (116° → 101°) and escalation in morning stiffness and joint pain.",
+   history: [
+     { session: "S1 (12m ago)", rom: 116, pain: 2 },
+     { session: "S2 (8m ago)", rom: 111, pain: 3 },
+     { session: "S3 (4m ago)", rom: 106, pain: 4 },
+     { session: "S4 (Current)", rom: 101, pain: 5 }
+   ],
    wearable:{rom:101,flexion:48,velocity:130,variability:11,asymmetry:15,smooth:"Reduced",flexSensor:96,imuAgreement:"Acceptable"},
    q:{pain:5,stiffness:"15–30 min",stairs:"Moderate",standing:"Mild",swelling:"No"},
    video:{knee:"Reduced",gait:"Moderate asymmetry",trunk:"Mild",hesitation:"Mild"},
@@ -58,11 +105,28 @@ const profiles = [
     ["Sensor Reliability","Acceptable","Medium","The flex sensor differs from the IMU-derived estimate; interpret cautiously."]
    ],
    recommendation:"If this pattern persists or worsens, consider re-screening or clinical review.",
-   briefAdvice:"Initiate targeted physical therapy. Consult a physical therapist for kinetic-chain strengthening, joint offloading, and gait retraining to correct the 15% loading imbalance. Use ergonomic aids when climbing stairs, apply warm compresses for morning stiffness, and monitor for joint swelling."
+   briefAdvice:"Initiate targeted physical therapy. Consult a physical therapist for kinetic-chain strengthening, joint offloading, and gait retraining to correct the 15% loading imbalance. Use ergonomic aids when climbing stairs, apply warm compresses for morning stiffness, and monitor for joint swelling.",
+   actionSteps:[
+     { title: "Supervised Physical Therapy Referral", desc: "Engage a physical therapist for personalized joint offloading, quad restoration, and gait retraining." },
+     { title: "Foot-Loading Asymmetry Correction", desc: "Address 15% loading imbalance using cushioned footwear or corrective footbed orthotics." },
+     { title: "Symptom Logging & Flare Protocol", desc: "Log daily stiffness duration; escalate promptly if rest pain or persistent joint warmth emerges." }
+   ]
  },
  {
    id:"D", name:"Demo Patient D", label:"Higher-risk / worsening pattern", risk:"HIGHER", color:"red",
    clinicalFocus: "Specialist clinical review & diagnostic investigation",
+   urgency: "PRIORITY SPECIALIST REVIEW",
+   urgencyTone: "red",
+   timeline: "Within 1–2 Weeks",
+   pathway: "Specialist Orthopedic Consultation & Radiographic Workup",
+   trendBadge: { label: "ACCELERATED WORSENING", tone: "red" },
+   trendSummary: "Steep multi-month joint restriction (ROM 108° → 89°) paired with sharp escalation in daily resting pain (VAS 4 → 7).",
+   history: [
+     { session: "S1 (12m ago)", rom: 108, pain: 4 },
+     { session: "S2 (8m ago)", rom: 101, pain: 5 },
+     { session: "S3 (4m ago)", rom: 95, pain: 6 },
+     { session: "S4 (Current)", rom: 89, pain: 7 }
+   ],
    wearable:{rom:89,flexion:40,velocity:100,variability:17,asymmetry:24,smooth:"Low",flexSensor:81,imuAgreement:"Check"},
    q:{pain:7,stiffness:">30 min",stairs:"Severe",standing:"Moderate",swelling:"Yes"},
    video:{knee:"Clearly reduced",gait:"Significant asymmetry",trunk:"Present",hesitation:"Present"},
@@ -75,7 +139,12 @@ const profiles = [
     ["Sensor Reliability","Check","High","Flex-sensor and IMU estimates differ more substantially; hardware placement should be checked."]
    ],
    recommendation:"Persistent or worsening findings may warrant re-screening or clinical review. This prototype does not diagnose OA.",
-   briefAdvice:"Schedule a formal clinical consultation with an orthopedic specialist or rheumatologist. Clinical examination and diagnostic imaging (X-ray or MRI) are recommended to evaluate structural knee changes. Avoid unassisted stair navigation, consider temporary joint offloading (e.g. brace/cane), and discuss anti-inflammatory therapies."
+   briefAdvice:"Schedule a formal clinical consultation with an orthopedic specialist or rheumatologist. Clinical examination and diagnostic imaging (X-ray or MRI) are recommended to evaluate structural knee changes. Avoid unassisted stair navigation, consider temporary joint offloading (e.g. brace/cane), and discuss anti-inflammatory therapies.",
+   actionSteps:[
+     { title: "Orthopedic Specialist Evaluation", desc: "Formal clinical knee examination to assess structural cartilage deterioration and joint effusion." },
+     { title: "Diagnostic Imaging Workup", desc: "Order bilateral weight-bearing knee radiographs (AP & lateral) to measure joint space narrowing." },
+     { title: "Assisted Unloading & Medical Therapy", desc: "Deploy unloader knee brace / cane for stair negotiation; discuss guided anti-inflammatory management." }
+   ]
  }
 ];
 
@@ -137,13 +206,6 @@ function App() {
   }, [deteriorating]);
 
   const v = useMemo(() => dynamicValues(p, t), [p, t]);
-  const profileChart = profiles.map((x, i) => ({
-    session: `S${i + 1}`,
-    rom: x.wearable.rom,
-    pain: x.q.pain,
-    variability: x.wearable.variability,
-    asymmetry: x.wearable.asymmetry
-  }));
   const riskTone = p.risk === "LOW" ? "green" : p.risk.includes("MODERATE") ? "orange" : "red";
 
   const handleCopyReport = () => {
@@ -154,6 +216,14 @@ Patient: ${p.name} (ID: ${p.id})
 Profile: ${p.label}
 Risk Category: ${p.risk}
 Clinical Focus: ${p.clinicalFocus}
+Urgency / Review: ${p.urgency} (Timeline: ${p.timeline})
+Pathway: ${p.pathway}
+
+LONGITUDINAL TRAJECTORY:
+Status: ${p.trendBadge.label}
+Summary: ${p.trendSummary}
+History:
+${p.history.map(h => `- ${h.session}: ROM ${h.rom}°, Pain ${h.pain}/10`).join("\n")}
 
 BIOMECHANICAL INDICATORS:
 - Knee ROM: ${p.wearable.rom}° (Peak Flexion: ${p.wearable.flexion}°)
@@ -181,6 +251,9 @@ ${p.briefAdvice}
 
 RECOMMENDED NEXT STEP:
 ${p.recommendation}
+
+ACTION PROTOCOL:
+${p.actionSteps.map((s, i) => `${i + 1}. ${s.title}: ${s.desc}`).join("\n")}
 
 Disclaimer: JoinTrack is an experimental screening & monitoring prototype, not a clinical diagnostic device.
 ====================================`;
@@ -359,32 +432,93 @@ Disclaimer: JoinTrack is an experimental screening & monitoring prototype, not a
         <div className="grid2">
           <section className="card">
             <div className="cardHead">
-              <div><span className="sectionTag">TREND ENGINE</span><h2>Longitudinal Simulation</h2></div>
-              <span className="trendBadge"><TrendingDown size={15}/> WORSENING DEMO</span>
+              <div>
+                <span className="sectionTag">TREND ENGINE</span>
+                <h2>Longitudinal Trajectory ({p.name})</h2>
+              </div>
+              <span className={`trendBadge trend-${p.trendBadge.tone}`}>
+                {p.trendBadge.tone === "green" ? <CircleCheck size={14}/> : <TrendingDown size={14}/>}
+                {p.trendBadge.label}
+              </span>
             </div>
             <div className="chart">
-              <ResponsiveContainer width="100%" height={270}>
-                <LineChart data={profileChart}>
+              <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={p.history}>
                   <CartesianGrid strokeDasharray="3 3"/>
                   <XAxis dataKey="session"/>
-                  <YAxis/>
+                  <YAxis domain={[0, 140]}/>
                   <Tooltip/>
                   <Legend/>
-                  <Line type="monotone" dataKey="rom" name="Knee ROM (°)" strokeWidth={2}/>
-                  <Line type="monotone" dataKey="pain" name="Pain (0–10)" strokeWidth={2}/>
+                  <Line type="monotone" dataKey="rom" name="Knee ROM (°)" stroke="#1f7a8c" strokeWidth={2.5} dot={{r: 4, fill: "#1f7a8c"}} activeDot={{r: 6}} />
+                  <Line type="monotone" dataKey="pain" name="Pain (0–10)" stroke="#c43e42" strokeWidth={2.5} dot={{r: 4, fill: "#c43e42"}} activeDot={{r: 6}} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
-          </section>
-          <section className="card recommendation">
-            <div className="cardHead">
-              <div><span className="sectionTag">RECOMMENDED</span><h2>Next Step</h2></div>
-              <ShieldCheck/>
+            <div className="trendSummaryBox">
+              <Info size={14}/>
+              <p><b>Longitudinal Insight:</b> {p.trendSummary}</p>
             </div>
-            <p>{p.recommendation}</p>
-            <div className="lineage">
-              <b>Data lineage</b>
-              <span>Measured</span><i>→</i><span>Calculated</span><i>→</i><span>Evaluated</span><i>→</i><span>Interpreted</span><i>→</i><span>Recommended</span>
+          </section>
+
+          <section className="card recommendationCard">
+            <div className="cardHead">
+              <div>
+                <span className="sectionTag">RECOMMENDED CLINICAL PATHWAY</span>
+                <h2>Decision Support & Next Steps</h2>
+              </div>
+              <span className={`priorityBadge priority-${p.urgencyTone}`}>
+                <ShieldCheck size={14}/> {p.urgency}
+              </span>
+            </div>
+
+            <div className="pathwayBanner">
+              <div className="pathwayHeader">
+                <div className="pathwayMain">
+                  <small>CARE PROTOCOL</small>
+                  <h3>{p.pathway}</h3>
+                </div>
+                <div className="timelineBadge">
+                  <Clock size={13}/>
+                  <span>Review: <b>{p.timeline}</b></span>
+                </div>
+              </div>
+              <p className="primaryRecText">{p.recommendation}</p>
+            </div>
+
+            <div className="actionStepsBlock">
+              <div className="actionStepsHeading">Recommended Protocol Actions:</div>
+              <div className="actionStepsList">
+                {p.actionSteps.map((step, sIdx) => (
+                  <div className="actionStepItem" key={sIdx}>
+                    <div className="stepIndex">0{sIdx + 1}</div>
+                    <div className="stepDetails">
+                      <b>{step.title}</b>
+                      <p>{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="evidencePipeline">
+              <span className="pipelineLabel">Digital Evidence Lineage:</span>
+              <div className="pipelineNodes">
+                <span className="node">Measured</span>
+                <i>→</i>
+                <span className="node">Calculated</span>
+                <i>→</i>
+                <span className="node">Evaluated</span>
+                <i>→</i>
+                <span className="node">Interpreted</span>
+                <i>→</i>
+                <span className="node nodeHighlight">Recommended</span>
+              </div>
+            </div>
+
+            <div className="recCardFooter">
+              <button className="btnCardReport" onClick={() => setShowReport(true)}>
+                <FileText size={14}/> View Full Clinical Summary Report <ChevronRight size={14}/>
+              </button>
             </div>
           </section>
         </div>
@@ -475,7 +609,18 @@ function ReportModal({p, v, copied, onClose, onCopy}) {
             </div>
           </div>
 
-          <div className="reportSectionTitle">2. Evaluated Screening Domains</div>
+          <div className="reportSectionTitle">2. Longitudinal Trajectory History</div>
+          <div className="reportMetricsGrid">
+            {p.history.map((h, i) => (
+              <div className="metricItem" key={i}>
+                <span>{h.session}</span>
+                <b>{h.rom}°</b>
+                <small>Pain: {h.pain}/10</small>
+              </div>
+            ))}
+          </div>
+
+          <div className="reportSectionTitle">3. Evaluated Screening Domains</div>
           <div className="reportDomainsList">
             {p.domains.map(([name, status, severity, reason]) => (
               <div className="reportDomainRow" key={name}>
