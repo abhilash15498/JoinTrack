@@ -368,7 +368,7 @@ Disclaimer: JoinTrack is an experimental screening & monitoring prototype, not a
         <div className="grid2">
           <section className="card">
             <div className="cardHead">
-              <div><span className="sectionTag">PATIENT-REPORTED</span><h2>Questionnaire</h2></div>
+              <div><span className="sectionTag">PATIENT-REPORTED</span><h2>Medical History and Symptoms</h2></div>
               <span className="complete"><CircleCheck size={15}/> Processed</span>
             </div>
             <div className="questionGrid">
